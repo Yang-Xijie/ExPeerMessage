@@ -10,6 +10,8 @@ class ViewController: UIViewController {
     var mcNearbyServiceAdvertiser: MCNearbyServiceAdvertiser!
     /// displaying others around you; inviting them to join the group by tapping their names
     var mcBrowserViewController: MCBrowserViewController!
+    /// use in mcSession to support streaming
+    var outputStream: OutputStream!
 
     // MARK: - viewDidLoad()
 
@@ -41,6 +43,8 @@ class ViewController: UIViewController {
     var messageField: UITextField!
     var sendButton: UIButton!
     var connectionButton: UIButton!
+    var streamCreateButton: UIButton!
+    var streamSendButton: UIButton!
 
     override func loadView() {
         print("loadView()")
@@ -131,6 +135,68 @@ class ViewController: UIViewController {
             return button
         }()
         view.addSubview(connectionButton)
+
+        // MARK: streamCreateButton
+
+        streamCreateButton = {
+            let button = UIButton()
+            button.addAction(
+                UIAction { _ in
+                    print("streamButton tapped")
+
+                    guard let peer = self.mcSession.connectedPeers.first else {
+                        print("connect to a peer first")
+                        return
+                    }
+
+                    do {
+                        try self.outputStream = self.mcSession.startStream(withName: "test", toPeer: peer)
+//                        self.outputStream.delegate = self
+                        self.outputStream.schedule(in: RunLoop.main, forMode: RunLoop.Mode.default)
+                        self.outputStream.open()
+                        print("open an outputStream")
+                    } catch let error as NSError {
+                        print("error in beginSession() = \(error)")
+                    }
+                }, for: .touchDown
+            )
+            button.configuration = {
+                var config = UIButton.Configuration.tinted()
+                config.buttonSize = .medium
+                config.cornerStyle = .medium
+                config.title = "Create the Stream"
+                return config
+            }()
+            return button
+        }()
+        view.addSubview(streamCreateButton)
+
+        // MARK: streamTestButton
+
+        streamSendButton = {
+            let button = UIButton()
+            button.addAction(
+                UIAction { _ in
+                    print("streamButton tapped")
+
+                    let string = "Testing stream"
+
+                    self.outputStream.write(string, maxLength: string.utf8.count)
+
+                    print("outputStream.write \(string.utf8.count)")
+
+                }, for: .touchDown
+            )
+            button.configuration = {
+                var config = UIButton.Configuration.tinted()
+                config.buttonSize = .medium
+                config.cornerStyle = .medium
+                config.title = "Test the Stream Using String"
+                return config
+            }()
+            return button
+        }()
+        view.addSubview(streamSendButton)
     }
 
     override func viewWillLayoutSubviews() {
@@ -158,6 +224,18 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             connectionButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
             connectionButton.topAnchor.constraint(equalToSystemSpacingBelow: messageField.bottomAnchor, multiplier: 1),
+        ])
+
+        streamCreateButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            streamCreateButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
+            streamCreateButton.topAnchor.constraint(equalToSystemSpacingBelow: connectionButton.bottomAnchor, multiplier: 1),
+        ])
+
+        streamSendButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            streamSendButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
+            streamSendButton.topAnchor.constraint(equalToSystemSpacingBelow: streamCreateButton.bottomAnchor, multiplier: 1),
         ])
     }
 

@@ -31,7 +31,12 @@ extension ViewController: MCSessionDelegate {
         }
     }
 
-    func session(_: MCSession, didReceive _: InputStream, withName _: String, fromPeer _: MCPeerID) {}
+    func session(_: MCSession, didReceive stream: InputStream, withName _: String, fromPeer _: MCPeerID) {
+        stream.delegate = self
+        stream.schedule(in: .main, forMode: RunLoop.Mode.default)
+        stream.open()
+        print("open an inputStream")
+    }
 
     func session(_: MCSession, didStartReceivingResourceWithName _: String, fromPeer _: MCPeerID, with _: Progress) {}
 
