@@ -57,7 +57,7 @@ class ViewController: UIViewController {
 
         chatView = {
             let textView = UITextView()
-            textView.text = "Hello, world.\nHi~"
+            textView.text = "Start your chat!"
             textView.textColor = .orange
             textView.textAlignment = .natural
             textView.isEditable = false
@@ -84,6 +84,18 @@ class ViewController: UIViewController {
             button.addAction(
                 UIAction { _ in
                     print("You tapped the button!")
+                    if self.messageField.text != "" {
+                        let message = self.messageField.text!
+                        self.messageField.text = ""
+                        self.chatView.text = self.chatView.text + "\n" + myID.displayName + ": " + message
+
+                        let data = message.data(using: String.Encoding.utf8)
+                        do {
+                            try self.mcSession.send(data!, toPeers: self.mcSession.connectedPeers, with: .reliable)
+                        } catch {
+                            print("Error occurred when sending data.")
+                        }
+                    }
                 }, for: .touchDown
             )
             button.configuration = {

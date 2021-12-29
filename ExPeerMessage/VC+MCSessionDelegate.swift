@@ -14,9 +14,22 @@ extension ViewController: MCSessionDelegate {
         @unknown default:
             fatalError()
         }
+
+        DispatchQueue.main.async {
+            if self.mcSession.connectedPeers.count != 0 {
+                self.sendButton.isEnabled = true
+            } else {
+                self.sendButton.isEnabled = false
+            }
+        }
     }
 
-    func session(_: MCSession, didReceive _: Data, fromPeer _: MCPeerID) {}
+    func session(_: MCSession, didReceive data: Data, fromPeer peer: MCPeerID) {
+        DispatchQueue.main.async {
+            let message = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue)! as String
+            self.chatView.text = self.chatView.text + "\n" + peer.displayName + ": " + message
+        }
+    }
 
     func session(_: MCSession, didReceive _: InputStream, withName _: String, fromPeer _: MCPeerID) {}
 
