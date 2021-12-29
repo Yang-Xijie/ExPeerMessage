@@ -1,6 +1,6 @@
 # README
 
-An playground app using `MultipeerConnectivity` to transfor data wirelessly between iOS / iPadOS.
+A playground app using `MultipeerConnectivity` to transfor data wirelessly between iOS / iPadOS.
 
 ## Info.plist
 
