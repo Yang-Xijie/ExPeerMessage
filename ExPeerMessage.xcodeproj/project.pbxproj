@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4857C318277CCCF200BAB7C8 /* UIViewController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4857C317277CCCF200BAB7C8 /* UIViewController+.swift */; };
+		4857C31A277CCDA200BAB7C8 /* VC+MCBrowserViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4857C319277CCDA200BAB7C8 /* VC+MCBrowserViewControllerDelegate.swift */; };
+		4857C31C277CCDD100BAB7C8 /* VC+MCNearbyServiceAdvertiserDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4857C31B277CCDD100BAB7C8 /* VC+MCNearbyServiceAdvertiserDelegate.swift */; };
+		4857C31E277CCF2C00BAB7C8 /* MultipeerConnectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4857C31D277CCF2C00BAB7C8 /* MultipeerConnectivity.swift */; };
 		48DA8E69277C975A007F06D2 /* VC+Configure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DA8E68277C975A007F06D2 /* VC+Configure.swift */; };
-		48DA8E6B277C97A2007F06D2 /* VC+MultipeerConnectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DA8E6A277C97A2007F06D2 /* VC+MultipeerConnectivity.swift */; };
+		48DA8E6B277C97A2007F06D2 /* VC+MCSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DA8E6A277C97A2007F06D2 /* VC+MCSessionDelegate.swift */; };
 		48EE456D277B4CCB000A92CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EE456C277B4CCB000A92CA /* AppDelegate.swift */; };
 		48EE456F277B4CCB000A92CA /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EE456E277B4CCB000A92CA /* SceneDelegate.swift */; };
 		48EE4571277B4CCB000A92CA /* VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48EE4570277B4CCB000A92CA /* VC.swift */; };
@@ -17,8 +21,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4857C317277CCCF200BAB7C8 /* UIViewController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+.swift"; sourceTree = "<group>"; };
+		4857C319277CCDA200BAB7C8 /* VC+MCBrowserViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VC+MCBrowserViewControllerDelegate.swift"; sourceTree = "<group>"; };
+		4857C31B277CCDD100BAB7C8 /* VC+MCNearbyServiceAdvertiserDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VC+MCNearbyServiceAdvertiserDelegate.swift"; sourceTree = "<group>"; };
+		4857C31D277CCF2C00BAB7C8 /* MultipeerConnectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipeerConnectivity.swift; sourceTree = "<group>"; };
 		48DA8E68277C975A007F06D2 /* VC+Configure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VC+Configure.swift"; sourceTree = "<group>"; };
-		48DA8E6A277C97A2007F06D2 /* VC+MultipeerConnectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VC+MultipeerConnectivity.swift"; sourceTree = "<group>"; };
+		48DA8E6A277C97A2007F06D2 /* VC+MCSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VC+MCSessionDelegate.swift"; sourceTree = "<group>"; };
 		48EE4569277B4CCB000A92CA /* ExPeerMessage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExPeerMessage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		48EE456C277B4CCB000A92CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		48EE456E277B4CCB000A92CA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,9 +70,13 @@
 			children = (
 				48EE456C277B4CCB000A92CA /* AppDelegate.swift */,
 				48EE456E277B4CCB000A92CA /* SceneDelegate.swift */,
+				4857C31D277CCF2C00BAB7C8 /* MultipeerConnectivity.swift */,
 				48EE4570277B4CCB000A92CA /* VC.swift */,
+				48DA8E6A277C97A2007F06D2 /* VC+MCSessionDelegate.swift */,
+				4857C31B277CCDD100BAB7C8 /* VC+MCNearbyServiceAdvertiserDelegate.swift */,
+				4857C319277CCDA200BAB7C8 /* VC+MCBrowserViewControllerDelegate.swift */,
 				48DA8E68277C975A007F06D2 /* VC+Configure.swift */,
-				48DA8E6A277C97A2007F06D2 /* VC+MultipeerConnectivity.swift */,
+				4857C317277CCCF200BAB7C8 /* UIViewController+.swift */,
 				48EE4575277B4CCC000A92CA /* Assets.xcassets */,
 				48EE4577277B4CCC000A92CA /* LaunchScreen.storyboard */,
 				48EE457A277B4CCC000A92CA /* Info.plist */,
@@ -147,10 +159,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				48EE4571277B4CCB000A92CA /* VC.swift in Sources */,
+				4857C31A277CCDA200BAB7C8 /* VC+MCBrowserViewControllerDelegate.swift in Sources */,
 				48EE456D277B4CCB000A92CA /* AppDelegate.swift in Sources */,
+				4857C318277CCCF200BAB7C8 /* UIViewController+.swift in Sources */,
 				48EE456F277B4CCB000A92CA /* SceneDelegate.swift in Sources */,
 				48DA8E69277C975A007F06D2 /* VC+Configure.swift in Sources */,
-				48DA8E6B277C97A2007F06D2 /* VC+MultipeerConnectivity.swift in Sources */,
+				48DA8E6B277C97A2007F06D2 /* VC+MCSessionDelegate.swift in Sources */,
+				4857C31E277CCF2C00BAB7C8 /* MultipeerConnectivity.swift in Sources */,
+				4857C31C277CCDD100BAB7C8 /* VC+MCNearbyServiceAdvertiserDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

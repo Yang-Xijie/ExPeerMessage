@@ -1,9 +1,7 @@
-// VC+configure.swift
+import UIKit
 
-import Foundation
-
-extension ViewController {
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-}
+// extension ViewController {
+//    override var prefersStatusBarHidden: Bool {
+//        return true
+//    }
+// }
