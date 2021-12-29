@@ -24,6 +24,7 @@
 		48EE4575277B4CCC000A92CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48EE4578277B4CCC000A92CA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		48EE457A277B4CCC000A92CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		48EE4580277B55AA000A92CA /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +41,7 @@
 		48EE4560277B4CCA000A92CA = {
 			isa = PBXGroup;
 			children = (
+				48EE4580277B55AA000A92CA /* README.md */,
 				48EE456B277B4CCB000A92CA /* ExPeerMessage */,
 				48EE456A277B4CCB000A92CA /* Products */,
 			);
@@ -83,6 +85,8 @@
 			dependencies = (
 			);
 			name = ExPeerMessage;
+			packageProductDependencies = (
+			);
 			productName = ExPeerMessage;
 			productReference = 48EE4569277B4CCB000A92CA /* ExPeerMessage.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +115,8 @@
 				Base,
 			);
 			mainGroup = 48EE4560277B4CCA000A92CA;
+			packageReferences = (
+			);
 			productRefGroup = 48EE456A277B4CCB000A92CA /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
