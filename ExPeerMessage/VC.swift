@@ -4,9 +4,36 @@ import UIKit
 class ViewController: UIViewController {
     // MARK: - properties
 
+    /// communicating with peers in the group
     var mcSession: MCSession!
+    /// telling deveices around you that you are willing to join a group; handling the invitations from others
     var mcNearbyServiceAdvertiser: MCNearbyServiceAdvertiser!
+    /// displaying others around you; inviting them to join the group by tapping their names
     var mcBrowserViewController: MCBrowserViewController!
+
+    // MARK: - viewDidLoad()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        print("viewDidLoad()")
+
+        setupHideKeyboardOnTap()
+
+        // create a session
+        mcSession = MCSession(peer: myID, securityIdentity: nil, encryptionPreference: .required)
+        mcSession.delegate = self
+
+        // tell devices around you that you are willing to join a group
+        mcNearbyServiceAdvertiser = MCNearbyServiceAdvertiser(peer: myID, discoveryInfo: nil, serviceType: "ExPeerMessage")
+        mcNearbyServiceAdvertiser.delegate = self
+        mcNearbyServiceAdvertiser.startAdvertisingPeer()
+
+        // configure mcBrowserViewController
+        mcBrowserViewController = MCBrowserViewController(serviceType: "ExPeerMessage", session: self.mcSession)
+        mcBrowserViewController.delegate = self
+        mcBrowserViewController.maximumNumberOfPeers = 1
+    }
 
     // MARK: - subviews
 
@@ -79,8 +106,6 @@ class ViewController: UIViewController {
                 UIAction { _ in
                     print("connectionButton tapped")
                     // to invite others to join the room
-                    self.mcBrowserViewController = MCBrowserViewController(serviceType: "ExPeerMessage", session: self.mcSession)
-                    self.mcBrowserViewController.delegate = self
                     self.present(self.mcBrowserViewController, animated: true, completion: nil)
                 }, for: .touchDown
             )
@@ -97,8 +122,6 @@ class ViewController: UIViewController {
     }
 
     override func viewWillLayoutSubviews() {
-//        print("viewWillLayoutSubviews()")
-
         chatView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             chatView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.5),
@@ -126,24 +149,5 @@ class ViewController: UIViewController {
         ])
     }
 
-    override func viewDidLayoutSubviews() {
-//        print("viewDidLayoutSubviews()")
-    }
-
-    // MARK: - viewDidLoad()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        print("viewDidLoad()")
-
-        self.setupHideKeyboardOnTap()
-
-        mcSession = MCSession(peer: myID, securityIdentity: nil, encryptionPreference: .required)
-        mcSession.delegate = self
-
-        self.mcNearbyServiceAdvertiser = MCNearbyServiceAdvertiser(peer: myID, discoveryInfo: nil, serviceType: "ExPeerMessage")
-        mcNearbyServiceAdvertiser.delegate = self
-        mcNearbyServiceAdvertiser.startAdvertisingPeer()
-    }
+    override func viewDidLayoutSubviews() {}
 }

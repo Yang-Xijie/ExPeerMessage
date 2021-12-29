@@ -2,6 +2,7 @@ import MultipeerConnectivity
 import UIKit
 
 extension ViewController: MCSessionDelegate {
+    /// Called when the state of a nearby peer changes.
     func session(_: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         switch state {
         case .notConnected:
