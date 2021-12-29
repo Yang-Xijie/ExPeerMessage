@@ -7,75 +7,115 @@ struct ExMessage: Codable, Hashable {
 }
 
 class ViewController: UIViewController {
-    var textField: UITextField!
-    var textView: UITextView!
-    var button: UIButton!
+    var chatView: UITextView!
+    var messageField: UITextField!
+    var sendButton: UIButton!
+    var connectionButton: UIButton!
 
     override func loadView() {
         print("loadView()")
 
         // MARK: view
 
-        view = UIView()
-        view.backgroundColor = .cyan
+        view = {
+            let view = UIView()
+            view.backgroundColor = .cyan
+            return view
+        }()
 
         // MARK: textView
 
-        textView = UITextView()
-        textView.text = "a\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\n"
-        textView.textColor = .orange
-        textView.textAlignment = .natural
-        textView.isEditable = false
-        textView.isSelectable = false
-        textView.frame.size.width = 20
-        view.addSubview(textView)
+        chatView = {
+            let textView = UITextView()
+            textView.text = "a\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\n"
+            textView.textColor = .orange
+            textView.textAlignment = .natural
+            textView.isEditable = false
+            textView.isSelectable = false
+            textView.frame.size.width = 20
+            return textView
+        }()
+        view.addSubview(chatView)
 
         // MARK: textField
 
-        textField = UITextField()
-        textField.placeholder = "Enter Message Here"
-        textField.borderStyle = .roundedRect
-        view.addSubview(textField)
+        messageField = {
+            let textField = UITextField()
+            textField.placeholder = "Enter Message Here"
+            textField.borderStyle = .roundedRect
+            return textField
+        }()
+        view.addSubview(messageField)
 
-        // MARK: button
+        // MARK: sendButton
 
-        button = UIButton()
-        button.addAction(
-          UIAction { _ in
-            print("You tapped the button!")
-          }, for: .touchDown
-        )
-        var config = UIButton.Configuration.tinted()
-        config.buttonSize = .medium
-        config.cornerStyle = .medium
-        config.title = "Send"
-        button.configuration = config
-        view.addSubview(button)
+        sendButton = {
+            let button = UIButton()
+            button.addAction(
+                UIAction { _ in
+                    print("You tapped the button!")
+                }, for: .touchDown
+            )
+            button.configuration = {
+                var config = UIButton.Configuration.tinted()
+                config.buttonSize = .medium
+                config.cornerStyle = .medium
+                config.title = "Send"
+                return config
+            }()
+            return button
+        }()
+        view.addSubview(sendButton)
+
+        // MARK: connectionButton
+
+        connectionButton = {
+            let button = UIButton()
+            button.addAction(
+                UIAction { _ in
+                    print("You tapped the button!")
+                }, for: .touchDown
+            )
+            button.configuration = {
+                var config = UIButton.Configuration.tinted()
+                config.buttonSize = .medium
+                config.cornerStyle = .medium
+                config.title = "Connection"
+                return config
+            }()
+            return button
+        }()
+        view.addSubview(connectionButton)
     }
 
     override func viewWillLayoutSubviews() {
         print("viewWillLayoutSubviews()")
 
-        textView.translatesAutoresizingMaskIntoConstraints = false
+        chatView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            textView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.5),
-            textView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.5),
-            textView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
-            textView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
+            chatView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.5),
+            chatView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.5),
+            chatView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
+            chatView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
         ])
 
-        textField.translatesAutoresizingMaskIntoConstraints = false
+        messageField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            textField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
-            textField.topAnchor.constraint(equalToSystemSpacingBelow: textView.bottomAnchor, multiplier: 1),
-        ])
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            button.leadingAnchor.constraint(equalToSystemSpacingAfter: textField.trailingAnchor, multiplier: 1),
-            button.topAnchor.constraint(equalToSystemSpacingBelow: textView.bottomAnchor, multiplier: 1),
+            messageField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
+            messageField.topAnchor.constraint(equalToSystemSpacingBelow: chatView.bottomAnchor, multiplier: 1),
         ])
 
+        sendButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            sendButton.leadingAnchor.constraint(equalToSystemSpacingAfter: messageField.trailingAnchor, multiplier: 1),
+            sendButton.topAnchor.constraint(equalToSystemSpacingBelow: chatView.bottomAnchor, multiplier: 1),
+        ])
+
+        connectionButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            connectionButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
+            connectionButton.topAnchor.constraint(equalToSystemSpacingBelow: messageField.bottomAnchor, multiplier: 1),
+        ])
     }
 
     override func viewDidLayoutSubviews() {
