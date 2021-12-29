@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         setupHideKeyboardOnTap()
 
         // create a session
-        mcSession = MCSession(peer: myID, securityIdentity: nil, encryptionPreference: .required)
+        mcSession = MCSession(peer: myID, securityIdentity: nil, encryptionPreference: .none)
         mcSession.delegate = self
 
         // tell devices around you that you are willing to join a group
@@ -45,6 +45,7 @@ class ViewController: UIViewController {
     var connectionButton: UIButton!
     var streamCreateButton: UIButton!
     var streamSendButton: UIButton!
+    var streamSpeedTestButton: UIButton!
 
     override func loadView() {
         print("loadView()")
@@ -151,7 +152,7 @@ class ViewController: UIViewController {
                     }
                     do {
                         // create the outputStream
-                        try self.outputStream = self.mcSession.startStream(withName: "Stream", toPeer: peer) // this will call the `func session(_: MCSession, didReceive stream: InputStream, withName _: String, fromPeer _: MCPeerID)` to create the InputStream on the reciever.
+                        try self.outputStream = self.mcSession.startStream(withName: "Stream", toPeer: peer) // this will call the `func session(_: MCSession, didReceive stream: InputStream, withName _: String, fromPeer _: MCPeerID)` to create the InputStream on the receiver.
                         self.outputStream.schedule(in: RunLoop.main, forMode: RunLoop.Mode.default)
                         self.outputStream.open()
                         print("open an outputStream")
@@ -178,13 +179,16 @@ class ViewController: UIViewController {
             button.addAction(
                 UIAction { _ in
                     print("streamButton tapped")
-                    let string = "Testing stream"
+
+                    guard let outputStream = self.outputStream else {
+                        print("create the stream first")
+                        return
+                    }
 
                     // stream something
-                    self.outputStream.write(string, maxLength: string.utf8.count)
-
+                    let string = "Testing stream"
+                    outputStream.write(string, maxLength: string.utf8.count)
                     print("outputStream.write \(string.utf8.count)")
-
                 }, for: .touchDown
             )
             button.configuration = {
@@ -197,12 +201,45 @@ class ViewController: UIViewController {
             return button
         }()
         view.addSubview(streamSendButton)
+
+        // MARK: streamSpeedTestButton
+
+        streamSpeedTestButton = {
+            let button = UIButton()
+            button.addAction(
+                UIAction { _ in
+                    guard let outputStream = self.outputStream else {
+                        print("create the stream first")
+                        return
+                    }
+
+                    print("[start testing speed]")
+
+                    _ = Timer.scheduledTimer(withTimeInterval: SpeedExperiment.interval, repeats: true) { _ in
+
+                        outputStream.write(SpeedExperiment.testString, maxLength: SpeedExperiment.testString.utf8.count)
+                    }
+
+                    print("end")
+
+                }, for: .touchDown
+            )
+            button.configuration = {
+                var config = UIButton.Configuration.tinted()
+                config.buttonSize = .medium
+                config.cornerStyle = .medium
+                config.title = "Test the Stream Speed"
+                return config
+            }()
+            return button
+        }()
+        view.addSubview(streamSpeedTestButton)
     }
 
     override func viewWillLayoutSubviews() {
         chatView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            chatView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.5),
+            chatView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 1),
             chatView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.5),
             chatView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
             chatView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
@@ -236,6 +273,12 @@ class ViewController: UIViewController {
         NSLayoutConstraint.activate([
             streamSendButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
             streamSendButton.topAnchor.constraint(equalToSystemSpacingBelow: streamCreateButton.bottomAnchor, multiplier: 1),
+        ])
+
+        streamSpeedTestButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            streamSpeedTestButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
+            streamSpeedTestButton.topAnchor.constraint(equalToSystemSpacingBelow: streamSendButton.bottomAnchor, multiplier: 1),
         ])
     }
 
