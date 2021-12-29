@@ -9,6 +9,7 @@ struct ExMessage: Codable, Hashable {
 class ViewController: UIViewController {
     var textField: UITextField!
     var textView: UITextView!
+    var button: UIButton!
 
     override func loadView() {
         print("loadView()")
@@ -35,6 +36,21 @@ class ViewController: UIViewController {
         textField.placeholder = "Enter Message Here"
         textField.borderStyle = .roundedRect
         view.addSubview(textField)
+
+        // MARK: button
+
+        button = UIButton()
+        button.addAction(
+          UIAction { _ in
+            print("You tapped the button!")
+          }, for: .touchDown
+        )
+        var config = UIButton.Configuration.tinted()
+        config.buttonSize = .medium
+        config.cornerStyle = .medium
+        config.title = "Send"
+        button.configuration = config
+        view.addSubview(button)
     }
 
     override func viewWillLayoutSubviews() {
@@ -53,6 +69,13 @@ class ViewController: UIViewController {
             textField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
             textField.topAnchor.constraint(equalToSystemSpacingBelow: textView.bottomAnchor, multiplier: 1),
         ])
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            button.leadingAnchor.constraint(equalToSystemSpacingAfter: textField.trailingAnchor, multiplier: 1),
+            button.topAnchor.constraint(equalToSystemSpacingBelow: textView.bottomAnchor, multiplier: 1),
+        ])
+
     }
 
     override func viewDidLayoutSubviews() {
