@@ -6,46 +6,67 @@ struct ExMessage: Codable, Hashable {
     let message: String
 }
 
-let width = 200.0
-let height = 300.0
-let x = UIScreen.main.bounds.size.width / 2 - width / 2
-let y = UIScreen.main.bounds.size.height / 2 - height / 2
-
 class ViewController: UIViewController {
-    var testLabel: UILabel!
+    var textField: UITextField!
     var textView: UITextView!
 
-    // https://developer.apple.com/library/archive/featuredarticles/ViewControllerPGforiPhoneOS/index.html#//apple_ref/doc/uid/TP40007457
     override func loadView() {
+        print("loadView()")
+
         // MARK: view
 
-        // var view = UIView!
-        // This property represents the root view of the view controller's view hierarchy. The default value of this property is nil.
-        // If you access this property when its value is nil, the view controller automatically calls the loadView() method and returns the resulting view.
         view = UIView()
         view.backgroundColor = .cyan
 
         // MARK: textView
 
-        textView = UITextView(frame:
-            .init(x: x,
-                  y: y,
-                  width: width,
-                  height: height))
-        textView.text = "aaaaaaaaa"
+        textView = UITextView()
+        textView.text = "a\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\na\n"
         textView.textColor = .orange
-        textView.textAlignment = .center
-
+        textView.textAlignment = .natural
         textView.isEditable = false
         textView.isSelectable = false
-
+        textView.frame.size.width = 20
         view.addSubview(textView)
+
+        // MARK: textField
+
+        textField = UITextField()
+        textField.placeholder = "Enter Message Here"
+        view.addSubview(textField)
+    }
+
+    override func viewWillLayoutSubviews() {
+        print("viewWillLayoutSubviews()")
+
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor, multiplier: 0.5),
+            textView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.5),
+            textView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
+            textView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
+        ])
+
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.safeAreaLayoutGuide.leadingAnchor, multiplier: 1),
+            textField.topAnchor.constraint(equalToSystemSpacingBelow: textView.bottomAnchor, multiplier: 1),
+        ])
+    }
+
+    override func viewDidLayoutSubviews() {
+        print("viewDidLayoutSubviews()")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
 
-        print("ViewController.viewDidLoad()")
+        print("viewDidLoad()")
     }
 }
+
+// extension ViewController {
+//    override var prefersStatusBarHidden: Bool {
+//        return true
+//    }
+// }
