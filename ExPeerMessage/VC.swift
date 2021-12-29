@@ -73,61 +73,59 @@ class ViewController: UIViewController {
             button.addAction(
                 UIAction { _ in
                     print("connectionButton tapped")
+                    let hostChatAlertAction: UIAlertAction = {
+                        let alertAction = UIAlertAction(title: "Host Chat", style: .default) { _ in
+                            self.hosting = true
+                        }
+                        // to invite others to join the room
+                        self.mcBrowser = MCBrowserViewController(serviceType: "ExPeerMessage", session: self.mcSession)
+                        self.mcBrowser.delegate = self
+                        self.present(self.mcBrowser, animated: true, completion: { print("presented") })
 
-                    if self.mcSession.connectedPeers.count == 0, !self.hosting {
-                        let hostChatAlertAction: UIAlertAction = {
-                            let alertAction = UIAlertAction(title: "Host Chat", style: .default) { _ in
-                                self.mcAdvertiserAssistant = MCAdvertiserAssistant(serviceType: "ExPeerMessage", discoveryInfo: nil, session: self.mcSession)
-                                self.mcAdvertiserAssistant.start()
-                                self.hosting = true
-                            }
-                            return alertAction
-                        }()
+                        return alertAction
+                    }()
 
-                        let joinChatAlertAction: UIAlertAction = {
-                            let alertAction = UIAlertAction(title: "Join Chat", style: .default) { _ in
-                                let mcBrowser = MCBrowserViewController(serviceType: "ExPeerMessage", session: self.mcSession)
-                                mcBrowser.delegate = self
-                                self.present(mcBrowser, animated: true, completion: nil)
-                            }
-                            return alertAction
-                        }()
+                    let joinChatAlertAction: UIAlertAction = {
+                        let alertAction = UIAlertAction(title: "Join Chat", style: .default) { _ in
+                            self.mcAdvertiserAssistant = MCAdvertiserAssistant(serviceType: "ExPeerMessage", discoveryInfo: nil, session: self.mcSession)
+                            self.mcAdvertiserAssistant.start()
+                        }
+                        return alertAction
+                    }()
 
-                        let connectActionSheet = UIAlertController(title: "Our chat", message: "Do you want to host or join a chat?", preferredStyle: .actionSheet)
-                        connectActionSheet.addAction(hostChatAlertAction)
-                        connectActionSheet.addAction(joinChatAlertAction)
-                        connectActionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+                    let connectActionSheet = UIAlertController(title: "Our chat", message: "Do you want to host or join a chat?", preferredStyle: .actionSheet)
+                    connectActionSheet.addAction(hostChatAlertAction)
+                    connectActionSheet.addAction(joinChatAlertAction)
+                    connectActionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
 
-                        self.present(connectActionSheet, animated: true, completion: nil)
-                    } else if self.mcSession.connectedPeers.count == 0, self.hosting {
-                        let disconnectAlertAction: UIAlertAction = {
-                            let alertAction = UIAlertAction(title: "Disconnect", style: .destructive) { _ in
-                                self.mcSession.disconnect()
-                                self.hosting = false
-                            }
-                            return alertAction
-                        }()
+                    // works on iPad
+                    connectActionSheet.popoverPresentationController?.sourceView = button
+                    self.present(connectActionSheet, animated: true, completion: nil)
 
-                        let waitActionSheet = UIAlertController(title: "Waiting...", message: "Waiting for others to join the chat...", preferredStyle: .actionSheet)
-                        waitActionSheet.addAction(disconnectAlertAction)
-                        waitActionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                        
-                        self.present(waitActionSheet, animated: true, completion: nil)
-                    } else {
-                        let disconnectAlertAction: UIAlertAction = {
-                            let alertAction = UIAlertAction(title: "Disconnect", style: .destructive) { _ in
-                                self.mcSession.disconnect()
-                                self.hosting = false
-                            }
-                            return alertAction
-                        }()
+//
+                    ////
+//                    if !self.hosting {
+//                        // I want to host the room
+//
 
-                        let disconnectActionSheet = UIAlertController(title: "Are you sure you want to disconnect?", message: nil, preferredStyle: .actionSheet)
-                        disconnectActionSheet.addAction(disconnectAlertAction)
-                        disconnectActionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                        
-                        self.present(disconnectActionSheet, animated: true, completion: nil)
-                    }
+//                    }
+//                    else {
+//                        // self.hosting == true
+//                        let disconnectAlertAction: UIAlertAction = {
+//                            let alertAction = UIAlertAction(title: "Disconnect", style: .destructive) { _ in
+//                                self.mcSession.disconnect()
+//                                self.hosting = false
+//                            }
+//                            return alertAction
+//                        }()
+//
+//                        let waitActionSheet = UIAlertController(title: "Waiting...", message: "Waiting for others to join the chat...", preferredStyle: .actionSheet)
+//                        waitActionSheet.addAction(disconnectAlertAction)
+//                        waitActionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+//
+//                        waitActionSheet.popoverPresentationController?.sourceView = button
+//                        self.present(waitActionSheet, animated: true, completion: nil)
+//                    }
                 }, for: .touchDown
             )
             button.configuration = {
@@ -143,7 +141,7 @@ class ViewController: UIViewController {
     }
 
     override func viewWillLayoutSubviews() {
-        print("viewWillLayoutSubviews()")
+//        print("viewWillLayoutSubviews()")
 
         chatView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -173,7 +171,7 @@ class ViewController: UIViewController {
     }
 
     override func viewDidLayoutSubviews() {
-        print("viewDidLayoutSubviews()")
+//        print("viewDidLayoutSubviews()")
     }
 
     // MARK: - properties
@@ -186,8 +184,12 @@ class ViewController: UIViewController {
     var mcSession: MCSession!
     var mcAdvertiserAssistant: MCAdvertiserAssistant!
 
+    var mcBrowser: MCBrowserViewController!
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        print("viewDidLoad()")
 
         self.setupHideKeyboardOnTap()
 
@@ -196,11 +198,11 @@ class ViewController: UIViewController {
         peerID = MCPeerID(displayName: UIDevice.current.name)
         mcSession = MCSession(peer: peerID, securityIdentity: nil, encryptionPreference: .required)
         mcSession.delegate = self
-        mcSession.disconnect()
 
         hosting = false
 
-        print("viewDidLoad()")
+        self.mcAdvertiserAssistant = MCAdvertiserAssistant(serviceType: "ExPeerMessage", discoveryInfo: nil, session: self.mcSession)
+        self.mcAdvertiserAssistant.start()
     }
 
     @objc func removeKeyboard(_: UIGestureRecognizer) {
