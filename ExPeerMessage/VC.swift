@@ -144,14 +144,14 @@ class ViewController: UIViewController {
                 UIAction { _ in
                     print("streamButton tapped")
 
+                    // only stream to the first connected peer
                     guard let peer = self.mcSession.connectedPeers.first else {
                         print("connect to a peer first")
                         return
                     }
-
                     do {
-                        try self.outputStream = self.mcSession.startStream(withName: "test", toPeer: peer)
-//                        self.outputStream.delegate = self
+                        // create the outputStream
+                        try self.outputStream = self.mcSession.startStream(withName: "Stream", toPeer: peer) // this will call the `func session(_: MCSession, didReceive stream: InputStream, withName _: String, fromPeer _: MCPeerID)` to create the InputStream on the reciever.
                         self.outputStream.schedule(in: RunLoop.main, forMode: RunLoop.Mode.default)
                         self.outputStream.open()
                         print("open an outputStream")
@@ -178,9 +178,9 @@ class ViewController: UIViewController {
             button.addAction(
                 UIAction { _ in
                     print("streamButton tapped")
-
                     let string = "Testing stream"
 
+                    // stream something
                     self.outputStream.write(string, maxLength: string.utf8.count)
 
                     print("outputStream.write \(string.utf8.count)")

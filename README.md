@@ -1,6 +1,8 @@
 # README
 
-A playground app using `MultipeerConnectivity` to transfor data wirelessly between iOS / iPadOS.
+An example app using `MultipeerConnectivity` to transfor data wirelessly between iOS / iPadOS.
+
+Both using `Data` and `Stream` to transfer data are supported.
 
 ## Info.plist
 

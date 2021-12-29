@@ -1,6 +1,9 @@
 import Foundation
 
 extension ViewController: StreamDelegate {
+    /// called when stream has an event
+    ///
+    /// combined with MultipeerConnectivity, it holds the receiving procedure
     func stream(_ aStream: Stream, handle eventCode: Stream.Event) {
         print("Enter StreamDelegate")
         switch eventCode {
@@ -15,11 +18,8 @@ extension ViewController: StreamDelegate {
             } else {
                 print("not a valid UTF-8 sequence")
             }
-
-        // input
         case Stream.Event.hasSpaceAvailable:
             break
-        // output
         default:
             break
         }

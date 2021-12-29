@@ -2,7 +2,7 @@ import MultipeerConnectivity
 import UIKit
 
 extension ViewController: MCSessionDelegate {
-    /// Called when the state of a nearby peer changes.
+    /// Called when the state of any nearby peer changes.
     func session(_: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
         switch state {
         case .notConnected:
@@ -24,6 +24,7 @@ extension ViewController: MCSessionDelegate {
         }
     }
 
+    /// called when data received
     func session(_: MCSession, didReceive data: Data, fromPeer peer: MCPeerID) {
         DispatchQueue.main.async {
             let message = NSString(data: data as Data, encoding: String.Encoding.utf8.rawValue)! as String
@@ -31,6 +32,7 @@ extension ViewController: MCSessionDelegate {
         }
     }
 
+    /// called when creating the stream connection
     func session(_: MCSession, didReceive stream: InputStream, withName _: String, fromPeer _: MCPeerID) {
         stream.delegate = self
         stream.schedule(in: .main, forMode: RunLoop.Mode.default)
