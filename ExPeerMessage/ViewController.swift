@@ -33,6 +33,7 @@ class ViewController: UIViewController {
 
         textField = UITextField()
         textField.placeholder = "Enter Message Here"
+        textField.borderStyle = .roundedRect
         view.addSubview(textField)
     }
 
